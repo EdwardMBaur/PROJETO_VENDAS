@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  # --- Tabela Fato ---
+  - name: TF_Vendas
+    description: "Tabela transacional contendo o histórico de vendas."
+    columns:
+      - name: ID_Venda
+        description: "Chave primária da venda."
+        tests:
+          - unique
+          - not_null
+      - name: ID_Cliente
+        description: "Chave estrangeira para TD_Clientes."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('TD_Clientes')
+              field: ID_Cliente
+      - name: ID_Item
+        description: "Chave estrangeira para TD_Item."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('TD_Item')
+              field: ID_Item
+      - name: ID_Localidade
+        description: "Chave estrangeira para TD_Localidade."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('TD_Localidade')
+              field: ID_Localidade
+
+  # --- Tabelas Dimensão ---
+  - name: TD_Clientes
+    description: "Dimensão de Clientes contendo nomes concatenados."
+    columns:
+      - name: ID_Cliente
+        description: "Chave primária gerada sequencialmente."
+        tests:
+          - unique
+          - not_null
+
+  - name: TD_Item
+    description: "Dimensão de Produtos e Itens vendidos."
+    columns:
+      - name: ID_Item
+        description: "Chave primária do item."
+        tests:
+          - unique
+          - not_null
+
+  - name: TD_Localidade
+    description: "Dimensão geográfica das vendas."
+    columns:
+      - name: ID_Localidade
+        description: "Chave primária da localidade."
+        tests:
+          - unique
+          - not_null
