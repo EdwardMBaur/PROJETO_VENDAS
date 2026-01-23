@@ -1,6 +1,7 @@
 import pandas as pd
 import psycopg2 as pg
-from psycopg2.extras import execute_values  
+from psycopg2.extras import execute_values 
+from Configs.settings import get_db_config 
 
 class Load:
     @staticmethod
@@ -8,13 +9,8 @@ class Load:
         print("[LOAD] Conectando ao banco de dados")
         conn = None
         try:
-            conn = pg.connect(
-                database="neondb",
-                user="neondb_owner",
-                password="npg_f1kXTJiL2EaU",
-                host="ep-square-art-ackp60x1-pooler.sa-east-1.aws.neon.tech",
-                port="5432"
-            )
+            db_config = get_db_config()
+            conn = pg.connect(**db_config)
             cursor = conn.cursor()
 
             df_to_load = dataframe.where(pd.notnull(dataframe), None)
